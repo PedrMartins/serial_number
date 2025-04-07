@@ -12,15 +12,14 @@ open (tty)
 nBytesInQueue(tty)
 
 
-
 parse_measurements <- function(segment) {
-  list(CO2 = as.numeric(sub(".*CO2: ([0-9.]+) ppm.*", "\\1", segment)),
+  list(Pressure = as.numeric(sub(".*Pressure: ([0-9.]+) ppm.*", "\\1", segment)),
       Temperature = as.numeric(sub(".*Temperature: ([0-9.]+) oC.*", "\\1", segment)),
       Humidity = as.numeric(sub(".*Humidity: ([0-9.]+) % RH.*", "\\1", segment))
   )
 }
 
-data_df <- data.frame(CO2 = numeric(),
+data_df <- data.frame(Pressure = numeric(),
                       Temperature = numeric(),
                       Humidity = numeric(),
                       stringsAsFactors = FALSE)
