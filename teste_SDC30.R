@@ -3,9 +3,7 @@ library(serial)
 library(readr)
 library (lubridate)
 
-
-
-tty <- serialConnection(name = "test",
+tty <- serialConnection(name = "Pressure_test",
                         port = "ttyUSB0")
 open (tty)
 
@@ -81,4 +79,5 @@ plot (data_dioxC$co2~data_dioxC$timeH,
 dev.off()
 
 isOpen(tty)
+
 #close(tty)
