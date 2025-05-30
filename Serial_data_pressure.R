@@ -1,4 +1,4 @@
-pkg <- c("serial", "lubridate", "dplyr","stringr")
+pkg <- c("serial", "lubridate", "dplyr","stringr", "googlesheets4")
 
 pkg <- pkg[!pkg%in%installed.packages()]
 install.packages (pkg)
@@ -7,7 +7,17 @@ library(serial)
 library(lubridate)
 library(dplyr)
 library(stringr)
+library(googlesheets4)
 
+
+
+
+# Authenticate (run only once)
+gs4_auth()  # This opens browser for auth
+
+# Create or link to a sheet
+sheet <- gs4_create("Pressure Data Log"
+                     , timeZone =)
 
 # Define serial connection
 port <- serialConnection(
@@ -71,7 +81,7 @@ parse_log_data <- function(raw_text) {
 
 
 start_time <- Sys.time() #+ as.difftime(20, units = "mins")
-end_time <- start_time + as.difftime(12, units = "mins")  # Limite de 24 horas
+end_time <- start_time + as.difftime(12, units = "weeks")  # Limite de 24 horas
 # Initialize dataframe
 data_log <- data.frame()
 
@@ -80,8 +90,9 @@ while (dim (data_log)[1] < 50) {
     line <- read.serialConnection(port)
     parsed <- parse_log_data(line)
     new_data <- as.data.frame( parsed)
-    data_log <- rbind(data_log, parsed)
-    write.csv(data_log, "presure_data.csv")
+    data_log <- rbind(data_log, new_data)
+    sheet_append(sheet, parsed)
+
 
     Sys.sleep(25)
 
